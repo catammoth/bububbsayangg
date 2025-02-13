@@ -1,0 +1,571 @@
+:root {
+    --primary-color: #ff3366;
+    --secondary-color: #ff758c;
+    --text-color: #333;
+    --background-color: #fff;
+    --envelope-color: #f8f8f8;
+    --heart-shadow: rgba(255, 51, 102, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--background-color) 0%, #fff5f7 100%);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Header Styles */
+.header {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+}
+
+.title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 4rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    animation: fadeInDown 1.5s ease-out;
+}
+
+/* Falling Hearts Animation */
+.falling-hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Click Instruction */
+.click-instruction {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    animation: fadeInDown 1.5s ease-out;
+}
+
+/* Envelope Styles */
+.envelope-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    perspective: 1000px;
+}
+
+.envelope {
+    width: 400px;
+    height: 280px;
+    background: var(--envelope-color);
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    transform-style: preserve-3d;
+}
+
+.envelope.open {
+    transform: translateY(50px) scale(0.95);
+}
+
+.envelope:hover:not(.open) {
+    transform: scale(1.05);
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--envelope-color);
+    clip-path: polygon(0 0, 50% 50%, 100% 0);
+    transition: all 0.5s ease;
+    transform-origin: top;
+    z-index: 3;
+}
+
+.envelope.open .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: -1;
+}
+
+.letter {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    background: white;
+    padding: 30px;
+    transform: translateY(0) scale(0.95);
+    transition: all 0.5s ease;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.envelope.open .letter {
+    transform: translateY(-150px) scale(1.1);
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 4;
+    width: 600px;
+    left: -100px;
+}
+
+.letter-content {
+    font-size: 0.95rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.2s;
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    line-height: 1.5;
+    max-height: 500px;
+    column-count: 2;
+    column-gap: 30px;
+}
+
+.letter-content h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    column-span: all;
+}
+
+.love-letter {
+    font-family: 'Poppins', sans-serif;
+    text-align: left;
+    margin: 0;
+    color: #555;
+    break-inside: avoid-column;
+}
+
+.signature {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-top: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    column-span: all;
+    text-align: center;
+}
+
+.envelope.open .letter-content {
+    opacity: 1;
+}
+
+/* Add envelope back and front */
+.envelope::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 0%, transparent 50%, var(--envelope-color) 50%, var(--envelope-color) 100%);
+    z-index: 2;
+}
+
+.envelope.open::before {
+    z-index: -1;
+}
+
+.envelope::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--envelope-color);
+    z-index: 0;
+}
+
+.envelope.open::after {
+    z-index: -2;
+}
+
+/* Photo Gallery Styles */
+.photo-section {
+    padding: 4rem 2rem;
+}
+
+.photo-gallery {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 20px;
+    padding: 20px;
+}
+
+.photo-frame {
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.photo-frame:hover {
+    transform: translateY(-5px);
+}
+
+/* Photo frame grid positions */
+.photo-frame:nth-child(1) {
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+    aspect-ratio: 4/3;
+}
+
+.photo-frame:nth-child(2) {
+    grid-column: 4 / 7;
+    grid-row: 1 / 2;
+    aspect-ratio: 4/3;
+}
+
+.photo-frame:nth-child(3) {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+    aspect-ratio: 1/1;
+}
+
+.photo-frame:nth-child(4) {
+    grid-column: 3 / 5;
+    grid-row: 2 / 3;
+    aspect-ratio: 1/1;
+}
+
+.photo-frame:nth-child(5) {
+    grid-column: 5 / 7;
+    grid-row: 2 / 3;
+    aspect-ratio: 1/1;
+}
+
+.photo-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fce4ec;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.memory-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Specific styling for the first photo */
+.photo-frame:nth-child(1) .memory-photo {
+    object-position: center 60%;  /* This will move the image down within the frame */
+}
+
+/* Specific styling for the fourth photo */
+.photo-frame:nth-child(4) .memory-photo {
+    object-position: center 40%;  /* This will move the image down within the frame */
+}
+
+.memory-photo:hover {
+    transform: scale(1.05);
+}
+
+/* Remove the old photo upload styles */
+#photo-upload {
+    display: none;
+}
+
+/* Heart Button Styles */
+.heart-button {
+    margin-top: 2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.heart-button:hover {
+    transform: scale(1.1);
+}
+
+.heart-button:active {
+    transform: scale(0.95);
+}
+
+.heart-shape {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    position: relative;
+    transform: rotate(45deg);
+    animation: heartbeat 1.5s ease-in-out infinite;
+    box-shadow: 0 5px 15px var(--heart-shadow);
+}
+
+.heart-shape::before,
+.heart-shape::after {
+    content: '';
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart-shape::before {
+    left: -25px;
+}
+
+.heart-shape::after {
+    top: -25px;
+}
+
+/* Footer Styles */
+.footer {
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: rotate(45deg) scale(1);
+    }
+    14% {
+        transform: rotate(45deg) scale(1.3);
+    }
+    28% {
+        transform: rotate(45deg) scale(1);
+    }
+    42% {
+        transform: rotate(45deg) scale(1.3);
+    }
+    70% {
+        transform: rotate(45deg) scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.8rem;
+        text-align: center;
+        padding: 0 20px;
+    }
+    
+    .envelope {
+        width: 320px;
+        height: 224px;
+    }
+    
+    .envelope.open .letter {
+        width: 90vw;
+        max-width: 480px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-120px) scale(1.1);
+    }
+
+    .letter-content {
+        font-size: 0.9rem;
+        padding: 20px;
+        column-gap: 20px;
+        max-height: none;
+    }
+
+    .letter-content h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .signature {
+        font-size: 1.5rem;
+    }
+
+    .photo-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .photo-frame:nth-child(n) {
+        grid-column: auto;
+        grid-row: auto;
+        aspect-ratio: 1/1;
+    }
+
+    .photo-section {
+        padding: 2rem 1rem;
+    }
+    
+    .click-instruction {
+        font-size: 2rem;
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 2.2rem;
+        padding: 0 15px;
+    }
+    
+    .envelope {
+        width: 280px;
+        height: 196px;
+    }
+    
+    .envelope.open .letter {
+        width: 95vw;
+        max-width: 350px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-80px) scale(1.05);
+    }
+
+    .letter-content {
+        column-count: 1;
+        font-size: 0.85rem;
+        padding: 15px;
+        line-height: 1.6;
+    }
+
+    .letter-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .signature {
+        font-size: 1.4rem;
+        margin-top: 1rem;
+    }
+
+    .photo-gallery {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .photo-frame {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .photo-frame:hover {
+        transform: none;
+    }
+
+    .memory-photo:hover {
+        transform: none;
+    }
+    
+    .click-instruction {
+        font-size: 1.6rem;
+    }
+
+    .heart-button {
+        margin-top: 1.5rem;
+    }
+
+    .heart-shape {
+        width: 40px;
+        height: 40px;
+    }
+
+    .heart-shape::before,
+    .heart-shape::after {
+        width: 40px;
+        height: 40px;
+    }
+
+    .heart-shape::before {
+        left: -20px;
+    }
+
+    .heart-shape::after {
+        top: -20px;
+    }
+
+    .footer {
+        padding: 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Additional optimization for very small screens */
+@media (max-width: 360px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    .envelope {
+        width: 260px;
+        height: 182px;
+    }
+
+    .envelope.open .letter {
+        width: 98vw;
+        padding: 10px;
+    }
+
+    .letter-content {
+        font-size: 0.8rem;
+        padding: 12px;
+    }
+
+    .letter-content h2 {
+        font-size: 1.6rem;
+    }
+
+    .signature {
+        font-size: 1.3rem;
+    }
+
+    .photo-frame {
+        max-width: 280px;
+    }
+} 
